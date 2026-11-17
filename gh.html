@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>과학 기말고사 실전 모의시험</title>
+<style>
+:root{--ink:#172033;--muted:#64748b;--line:#cbd5e1;--paper:#fff;--bg:#eef2f7;--accent:#17365d}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:"Malgun Gothic","Apple SD Gothic Neo",sans-serif;line-height:1.65}
+header{background:#142b49;color:#fff;padding:24px max(20px,calc((100% - 900px)/2))}
+header h1{font-size:24px;margin:0 0 5px}header p{margin:0;color:#dbeafe;font-size:13px}
+main{max-width:900px;margin:22px auto;padding:0 14px}.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+button{border:1px solid #9aa9ba;background:#fff;color:#142b49;padding:9px 14px;border-radius:4px;cursor:pointer;font-weight:700}
+button.active,button.primary{background:#17365d;color:#fff;border-color:#17365d}
+.paper{background:var(--paper);padding:34px 42px;margin:0 auto 24px;box-shadow:0 3px 15px #1e293b16;border:1px solid #d7dee8}
+.exam-head{text-align:center;border-bottom:3px double #26364b;padding-bottom:16px;margin-bottom:18px}
+.exam-head h2{font-size:25px;letter-spacing:8px;margin:0 0 4px}.exam-head .sub{font-size:14px}
+.meta{display:flex;justify-content:space-between;gap:12px;border:1px solid #333;padding:9px 12px;margin:15px 0;font-size:14px}
+.meta input{border:0;border-bottom:1px solid #777;width:85px;font:inherit;outline:none}
+.notice{font-size:13px;border:1px solid #777;padding:10px 13px;margin:14px 0 20px}
+.section-title{font-weight:800;border-bottom:1px solid #222;padding:7px 0;margin:24px 0 14px;font-size:16px}
+.q{margin:0 0 20px;break-inside:avoid}.qnum{font-weight:800;margin-right:5px}.qtext{font-weight:600}.choices{margin:8px 0 0 22px;display:grid;grid-template-columns:1fr 1fr;gap:4px 16px}
+.choice{display:flex;gap:7px;align-items:flex-start;font-size:14px}.choice input{margin-top:6px;accent-color:#17365d}
+.short-answer{width:100%;min-height:62px;border:1px solid #9aa9ba;padding:8px;font:inherit;margin-top:8px;resize:vertical}
+.scoreline{margin-top:22px;border-top:1px solid #333;padding-top:10px;font-size:13px;display:flex;justify-content:space-between}
+.key{display:none;background:#f8fafc;border:1px solid #9aa9ba;padding:16px;margin:18px 0}.key.show{display:block}.key h3{margin:8px 0}.key p{margin:5px 0;font-size:13px}
+.result{font-weight:800;margin:12px 0;color:#17365d}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:10px}
+@media(max-width:650px){.paper{padding:22px 17px}.meta{flex-wrap:wrap}.choices{grid-template-columns:1fr}.exam-head h2{letter-spacing:4px}}
+@page{size:A4 portrait;margin:12mm}
+.print-key{display:none}
+.answer-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;border:1px solid #777;padding:12px;margin:10px 0}
+.answer-explain{font-size:12px;margin:7px 0;line-height:1.5}
+@media print{
+ body{background:#fff;font-size:10.5pt}
+ .toolbar,header,footer{display:none!important}
+ main{max-width:none;margin:0;padding:0}
+ .paper{width:100%;min-height:0;box-shadow:none;border:0;margin:0;padding:0;page-break-after:auto}
+ .paper[style*="display: none"]{display:none!important}
+ .paper[style*="display: block"]{display:block!important}
+ .print-key{display:block!important;page-break-before:always}
+ .key{display:none!important}
+ .q{break-inside:avoid;margin-bottom:12px}
+ .choices{grid-template-columns:1fr 1fr;gap:2px 12px}
+ .choice{font-size:10pt}
+ input[type=radio]{appearance:none;border:1px solid #222;width:11px;height:11px;border-radius:50%;flex:none}
+ .short-answer{border:0;border-bottom:1px solid #777;min-height:45px}
+ .exam-head h2{font-size:21pt}
+}
+
+/* Refined, clean exam UI */
+:root{--ink:#172033;--muted:#64748b;--line:#d9e0ea;--paper:#fff;--bg:#f3f5f8;--accent:#315caa}
+body{background:var(--bg);color:#202b3c;font-family:Inter,"Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;line-height:1.62}
+header{background:#fff;color:#172033;padding:26px max(20px,calc((100% - 860px)/2));border-bottom:1px solid #e4e8ef}
+header h1{font-size:21px;letter-spacing:-.6px;font-weight:800}
+header p{color:#738096;font-size:13px}
+main{max-width:860px;margin:26px auto;padding:0 18px}
+.toolbar{gap:9px;margin-bottom:12px}
+.toolbar button{border:1px solid #d7deea;background:#fff;color:#34445e;padding:10px 16px;border-radius:9px;font-size:13px;transition:.15s}
+.toolbar button:hover{border-color:#8da6d2;background:#f7f9fd}
+.toolbar button.active,.toolbar button.primary{background:#315caa;color:white;border-color:#315caa}
+.paper{border:1px solid #e1e6ee;border-radius:14px;padding:38px 48px;margin-bottom:24px;box-shadow:0 8px 28px rgba(27,42,68,.06)}
+.exam-head{border-bottom:1px solid #d9e0ea;padding-bottom:18px;margin-bottom:20px}
+.exam-head h2{font-size:23px;letter-spacing:5px;color:#1d2b42}
+.exam-head .sub{color:#758198;font-size:13px}
+.meta{border:1px solid #dce2eb;border-radius:8px;padding:12px 14px;color:#4a5870}
+.meta input{border-bottom:1px solid #9aa8bb}
+.notice{background:#f7f9fc;border:1px solid #e2e8f0;border-radius:8px;color:#59677d;padding:12px 15px}
+.section-title{font-size:15px;color:#263c60;border-bottom:1px solid #dce3ed;padding:8px 0;margin:27px 0 17px}
+.q{padding:17px 18px 18px;margin:0 0 13px;border:1px solid #e3e8f0;border-radius:10px;background:#fff;break-inside:avoid}
+.qnum{display:inline-flex;align-items:center;justify-content:center;width:25px;height:25px;border-radius:7px;background:#edf2fa;color:#315caa;font-size:12px;margin-right:8px}
+.qtext{font-weight:650;color:#263247}
+.choices{margin:12px 0 0 33px;display:grid;grid-template-columns:1fr;gap:7px}
+.choice{align-items:center;padding:7px 10px;border:1px solid #edf0f5;border-radius:7px;color:#3c485c;cursor:pointer}
+.choice:hover{background:#f7f9fd;border-color:#c9d5e8}
+.choice input{margin:0 2px 0 0;accent-color:#315caa}
+.feedback{display:none;margin:12px 0 0 33px;padding:11px 13px;border-radius:8px;font-size:13px}
+.feedback.show{display:block}
+.feedback.correct{background:#edf7f0;border:1px solid #cce8d4;color:#23643a}
+.feedback.incorrect{background:#fff3f1;border:1px solid #f2d2cb;color:#9a3429}
+.short-answer{border:1px solid #dce2eb;border-radius:7px;min-height:76px}
+.scoreline{color:#64748b;border-top:1px solid #dce2eb}
+.result{padding:13px 15px;border-radius:9px;background:#f0f4fb;color:#294d88;font-size:14px}
+.key{display:none!important}
+@media(max-width:650px){.paper{padding:22px 16px}.q{padding:14px 12px}.choices{margin-left:0}.feedback{margin-left:0}.exam-head h2{letter-spacing:3px}}
+@media print{
+ body{background:#fff}
+ .paper{border:0;border-radius:0;box-shadow:none;padding:0}
+ .q{border:0;border-radius:0;padding:0;margin-bottom:12px}
+ .choices{margin-left:22px}
+ .choice{border:0;padding:2px 0}
+ .feedback{display:none!important}
+ .result{display:none!important}
+ .short-answer{border:0;border-bottom:1px solid #777;border-radius:0}
+}
+
+</style></head>
+<body>
+<header><h1>과학 기말고사 실전 모의시험</h1><p>교과서 본문 시험범위 기반 · 1차 / 2차 / 3차 · 각 100점</p></header>
+<main>
+<div class="toolbar no-print" id="tabs"></div>
+<div class="toolbar no-print"><button class="primary" onclick="grade()">채점하고 정답 확인</button><button onclick="resetPaper()">답안 다시 쓰기</button><button onclick="printExam()">시험지 인쇄 (답지 포함)</button></div>
+<div id="papers"></div><section id="printKey" class="paper print-key" style="display:none"></section>
+<footer>※ 이 모의시험은 제공된 교과서 본문 범위만 반영했습니다. 개념정리 학습지의 추가 내용은 출제하지 않았습니다.</footer>
+</main>
+<script>
+const exams = [
+{
+title:"제1회", mc:[
+["빛이 매끄러운 표면에 부딪쳐 진행 방향이 바뀌는 현상에 대한 설명으로 옳은 것은?",["입사각과 반사각은 항상 같다.","입사각은 반사각보다 항상 크다.","반사광선은 법선과 나란하다.","빛은 반사할 때 에너지를 전달하지 않는다."],0,"빛의 반사 법칙에 따라 입사각과 반사각의 크기는 항상 같다."],
+["광원이 아닌 물체를 볼 수 있는 까닭으로 가장 알맞은 것은?",["물체가 스스로 빛을 내기 때문에","물체가 광원에서 나온 빛을 반사하여 눈에 보내기 때문에","눈에서 빛이 나와 물체에 닿기 때문에","물체가 빛을 모두 흡수하기 때문에"],1,"광원이 아닌 물체는 광원에서 나온 빛을 반사하고, 그 빛이 눈에 들어오면 보인다."],
+["빛이 한 물질에서 다른 물질로 비스듬히 들어갈 때 경계에서 꺾여 진행하는 현상은?",["반사","합성","굴절","분산"],2,"두 물질의 경계에서 빛의 진행 방향이 꺾이는 현상은 굴절이다."],
+["빨간색, 초록색, 파란색 빛을 모두 합성했을 때 나타나는 색은?",["검은색","흰색","노란색","자홍색"],1,"빛의 삼원색인 빨강·초록·파랑을 모두 합성하면 흰색이 된다."],
+["물체가 특정한 색으로 보이는 까닭을 가장 잘 설명한 것은?",["모든 색의 빛을 똑같이 반사하기 때문에","물체가 빛을 만들기 때문에","물체에 반사되어 눈에 들어오는 빛의 색이 물체의 색으로 보이기 때문에","빛이 물체를 통과하지 못하기 때문에"],2,"물체에 반사된 빛의 색이 물체의 색으로 보인다."],
+["파동이 전달될 때 매질에 대한 설명으로 옳은 것은?",["파동과 함께 매질 전체가 이동한다.","매질은 파동을 전달하며 제자리에서 진동한다.","매질은 진공에서만 존재한다.","매질은 에너지를 만들기만 한다."],1,"용수철이나 물과 같은 매질은 제자리에서 진동하며 파동의 에너지를 전달한다."],
+["파동의 가장 높은 곳과 가장 낮은 곳을 바르게 짝지은 것은?",["마루-골","골-진폭","마루-파장","진폭-진동수"],0,"파동의 가장 높은 곳은 마루, 가장 낮은 곳은 골이다."],
+["1초 동안 파동이 진동하는 횟수를 나타내는 것은?",["파장","진폭","진동수","마루"],2,"진동수는 1초 동안 진동한 횟수이며 단위는 Hz이다."],
+["진폭이 커질수록 일반적으로 어떻게 되는가?",["소리가 높아진다.","소리가 커진다.","소리의 음색이 반드시 바뀐다.","소리가 전달되지 않는다."],1,"소리의 세기는 진폭에 따라 달라지며 진폭이 클수록 큰 소리이다."],
+["진동수가 커질수록 소리의 높낮이는 어떻게 되는가?",["낮아진다.","높아진다.","세기만 커진다.","변하지 않는다."],1,"진동수가 클수록 높은 소리가 난다."],
+["소리가 전달되는 매질에 대한 설명으로 옳은 것은?",["공기에서만 전달된다.","고체와 액체에서는 전달되지 않는다.","기체·액체·고체를 통해 전달될 수 있다.","진공에서도 매질 없이 전달된다."],2,"소리는 공기뿐 아니라 고체와 액체를 통해서도 전달되지만 진공에서는 전달되지 않는다."],
+["원소에 대한 설명으로 옳은 것은?",["두 종류 이상의 원자로 이루어진 물질이다.","한 종류의 입자로 이루어진 순물질을 이루는 기본 종류이다.","여러 물질이 섞인 혼합물이다.","원자핵과 전자를 합친 이름이다."],1,"교과서에서는 한 종류의 입자로 이루어진 물질을 원소라고 설명한다."],
+["원소 기호를 쓸 때 첫 글자의 표기법은?",["소문자","대문자","숫자","기호와 관계없이 자유롭게"],1,"원소 기호의 첫 글자는 대문자로 쓴다."],
+["화학식 H₂O에서 아래 첨자 2가 뜻하는 것은?",["수소 원자의 개수","산소 원자의 개수","분자의 개수","원소의 종류"],0,"화학식에서 원소 기호 오른쪽 아래 숫자는 해당 원자의 수를 나타낸다."],
+["원자핵을 구성하는 입자로 옳게 짝지어진 것은?",["전자와 양성자","양성자와 중성자","전자와 중성자","양성자만"],1,"원자핵은 양성자와 중성자로 이루어져 있다."],
+["전기적으로 중성인 원자에서 양성자 수와 전자 수의 관계는?",["양성자 수가 더 많다.","전자 수가 더 많다.","양성자 수와 전자 수가 같다.","항상 서로 다르다."],2,"원자는 양성자 수와 전자 수가 같아 전기적으로 중성이다."],
+["원자의 종류를 결정하는 기준은?",["중성자 수","전자 수","양성자 수","원자핵의 크기"],2,"원자의 종류는 원자핵을 구성하는 양성자의 수에 따라 달라진다."],
+["주기율표에서 같은 족에 있는 원소들의 공통점으로 옳은 것은?",["원자 번호가 같다.","화학적 성질이 비슷하다.","전자껍질 수가 같다.","모두 같은 질량이다."],1,"주기율표에서 같은 족의 원소들은 성질이 유사하다."],
+["우리 몸에서 주요 에너지원이며 탄수화물·단백질·지방에 해당하는 분류는?",["3대 영양소","무기염류","바이타민","물"],0,"탄수화물, 단백질, 지방은 3대 영양소로 에너지원으로 사용된다."],
+["음식물 속 녹말을 검출할 때 사용하는 시약은?",["뷰렛 용액","수단 Ⅲ 용액","아이오딘-아이오딘화 칼륨 용액","베네딕트 용액"],2,"녹말은 아이오딘-아이오딘화 칼륨 용액으로 검출한다."]
+],
+sa:[
+["빛의 반사 법칙을 이용하여 입사 광선, 반사 광선, 법선의 관계를 서술하시오.","입사 광선, 반사 광선, 법선은 같은 평면 위에 있고 입사각과 반사각의 크기는 같다.","세 요소가 같은 평면에 있음(1점), 입사각=반사각(1점)"],
+["파동이 전달될 때 매질의 움직임과 에너지 전달을 구분하여 설명하시오.","매질은 파동을 따라 이동하지 않고 제자리에서 진동하며, 파동은 에너지를 전달한다.","매질이 제자리에서 진동(1점), 에너지 전달(1점)"],
+["원자가 전기적으로 중성인 까닭을 양성자와 전자의 전하와 수를 이용하여 설명하시오.","양성자는 (+)전하, 전자는 (-)전하를 띠며 중성 원자에서는 양성자 수와 전자 수가 같아 전하량이 상쇄된다.","전하의 종류(1점), 양성자·전자 수가 같음(1점)"],
+["탄수화물·단백질·지방의 주요 기능을 각각 한 가지씩 쓰시오.","탄수화물은 주요 에너지원, 단백질은 몸의 구성 및 생명 활동 조절, 지방은 에너지 저장 및 몸의 구성에 관여한다.","각 영양소 기능을 바르게 제시(각 ⅔점 수준, 총 2점)"]
+]},
+{
+title:"제2회", mc:[
+["거울면에 빛이 비스듬히 입사할 때 입사각과 반사각의 관계를 확인하려 한다. 옳은 설명은?",["두 각은 항상 같다.","두 각의 합은 항상 90°이다.","반사각은 항상 0°이다.","입사각은 매질에 따라 달라진다."],0,"반사 법칙에 따라 입사각과 반사각은 같다."],
+["빛의 굴절로 설명할 수 있는 현상은?",["빛이 매끄러운 면에서 되돌아감","물속에 있는 물체의 위치가 실제와 다르게 보임","소리의 높낮이가 달라짐","물체가 소리를 흡수함"],1,"빛이 물과 공기 경계에서 굴절하기 때문에 물속 물체가 실제 위치와 다르게 보일 수 있다."],
+["스마트폰 화면에서 여러 색의 빛이 합성되어 흰색으로 보이는 원리는?",["빛의 삼원색 합성","소리의 진폭 증가","빛의 반사 법칙","매질의 진동"],0,"빨강·초록·파랑 빛을 합성하면 흰색이 된다."],
+["파동의 파장에 대한 설명으로 옳은 것은?",["진동 중심에서 마루까지의 거리","1초 동안 진동한 횟수","이웃한 마루 또는 이웃한 골 사이의 거리","파동의 가장 낮은 위치"],2,"파장은 이웃한 마루 또는 이웃한 골까지의 거리이다."],
+["진폭과 진동수의 차이를 바르게 설명한 것은?",["진폭은 진동 횟수, 진동수는 진동 크기이다.","진폭은 진동의 크기, 진동수는 1초 동안 진동한 횟수이다.","둘 다 소리의 높낮이만 결정한다.","둘 다 파동의 진행 방향을 뜻한다."],1,"진폭은 진동 중심에서 마루나 골까지의 거리이고, 진동수는 초당 진동 횟수이다."],
+["같은 높이의 소리를 내면서 더 큰 소리를 만들려면 어떤 변화를 주어야 하는가?",["진폭을 크게 한다.","진동수를 작게 한다.","파장을 길게 한다.","매질을 없앤다."],0,"소리의 세기는 진폭에 따라 달라진다."],
+["두 악기가 같은 높이와 세기로 소리를 내도 구별되는 주된 까닭은?",["파형이 다르기 때문에","진폭이 반드시 다르기 때문에","진동수가 0이기 때문에","소리가 진공에서 전달되기 때문에"],0,"악기마다 고유한 파형이 달라 음색을 구별할 수 있다."],
+["소리의 전달에 대한 설명으로 옳지 않은 것은?",["공기는 소리를 전달하는 매질이다.","물속에서도 소리가 전달될 수 있다.","책상과 같은 고체도 소리를 전달할 수 있다.","진공에서는 소리가 매질 없이 전달된다."],3,"소리는 매질이 있어야 전달되므로 진공에서는 전달되지 않는다."],
+["물질을 원소 기호와 숫자로 나타낸 것은?",["원자 번호","화학식","주기율표","원자핵"],1,"화학식은 물질을 원소 기호와 숫자로 표현한 것이다."],
+["다음 중 원소 기호의 표기법으로 옳은 것은?",["co","CO","cO","Co"],3,"원소 기호는 첫 글자를 대문자, 두 번째 글자가 있을 때 소문자로 쓴다. Co는 코발트 기호이다."],
+["원자핵에 (+)전하가 나타나는 까닭은?",["중성자가 (+)전하이기 때문에","양성자가 (+)전하를 띠기 때문에","전자가 원자핵 안에 있기 때문에","원자핵에 전하가 없기 때문에"],1,"양성자는 (+)전하, 중성자는 전하량이 0이다."],
+["원자 번호가 8인 원자에 대한 설명으로 옳은 것은?",["양성자가 8개이다.","중성자가 반드시 8개이다.","전자만 8개이고 양성자는 없다.","원소 종류를 알 수 없다."],0,"원자 번호는 양성자 수를 나타낸다."],
+["주기율표의 가로줄과 세로줄을 바르게 짝지은 것은?",["가로줄-족, 세로줄-주기","가로줄-주기, 세로줄-족","가로줄-원자핵, 세로줄-전자","가로줄-원소, 세로줄-화합물"],1,"가로줄은 주기, 세로줄은 족이다."],
+["다음 중 에너지원으로 사용되지 않고 생명 활동을 조절하는 영양소에 해당하는 것은?",["탄수화물","단백질","지방","무기염류"],3,"무기염류·바이타민·물은 에너지원으로 사용되지 않고 생명 활동을 조절한다."],
+["녹말이 들어 있는 음식물에 아이오딘 용액을 떨어뜨렸을 때 기대되는 반응은?",["보라색","청람색","붉은색","황적색"],1,"녹말은 아이오딘 용액에 청람색으로 반응한다."],
+["소화계에서 음식물이 직접 지나가지 않는 기관은?",["입","식도","간","작은창자"],2,"간은 소화액을 분비하지만 음식물이 직접 지나가는 통로는 아니다."],
+["작은창자 안쪽에 융털이 발달한 까닭은?",["음식물을 저장하기 위해","영양소를 흡수하는 표면적을 넓히기 위해","소화액을 만들지 않기 위해","혈액을 여과하기 위해"],1,"주름과 융털은 표면적을 넓혀 영양소를 효율적으로 흡수하게 한다."],
+["순환계를 이루는 구성 요소로 옳은 것은?",["심장·혈관·혈액","폐·기관·코","콩팥·오줌관·방광","입·위·작은창자"],0,"순환계는 혈액, 심장, 혈관으로 이루어진다."],
+["호흡 운동에서 들숨이 일어날 때 나타나는 변화로 옳은 것은?",["가슴우리 부피가 작아진다.","폐 내부 압력이 높아져 공기가 나간다.","가슴우리 부피가 커지고 공기가 들어온다.","횡격막이 위로 올라간다."],2,"들숨 때 가슴우리 부피가 커지고 폐 내부 압력이 낮아져 공기가 들어온다."],
+["콩팥의 주요 기능으로 옳은 것은?",["산소를 혈액에 공급","혈액 속 노폐물을 걸러 오줌 생성","음식물을 소화","혈액을 온몸으로 내보냄"],1,"콩팥은 혈액 속 노폐물을 걸러 오줌을 만드는 기관이다."]
+],
+sa:[
+["빛의 굴절이 일어나는 조건과 현상을 서술하시오.","빛이 한 물질에서 다른 물질로 비스듬히 입사할 때 두 물질의 경계에서 진행 방향이 꺾인다.","서로 다른 물질 경계(1점), 진행 방향이 꺾임(1점)"],
+["소리의 세기와 높낮이를 각각 결정하는 파동의 요소를 쓰고 관계를 설명하시오.","소리의 세기는 진폭에 따라 달라져 진폭이 클수록 큰 소리이며, 높낮이는 진동수에 따라 달라져 진동수가 클수록 높은 소리이다.","진폭-세기 관계(1점), 진동수-높낮이 관계(1점)"],
+["작은창자의 융털이 영양소 흡수에 유리한 까닭을 설명하시오.","작은창자 안쪽의 주름과 융털은 흡수 표면적을 넓혀 소화된 영양소를 효율적으로 흡수하게 한다.","표면적 증가(1점), 흡수 효율 증가(1점)"],
+["순환계의 구성 요소 세 가지를 쓰고, 순환계의 역할을 간단히 서술하시오.","혈액·심장·혈관으로 이루어지며 산소와 영양소를 세포로 운반하고 이산화 탄소와 노폐물을 운반한다.","구성 요소(1점), 물질 운반 역할(1점)"]
+]},
+{
+title:"제3회", mc:[
+["빛이 물체에 부딪쳐 반사될 때 반사광선의 방향을 예측하는 데 기준이 되는 선은?",["입사면","법선","파장","진동 중심"],1,"법선은 반사면에 수직인 선으로 입사각과 반사각을 측정하는 기준이다."],
+["빛의 반사와 굴절을 바르게 비교한 것은?",["반사는 경계에서 되돌아가는 현상, 굴절은 다른 물질로 들어가며 꺾이는 현상이다.","반사와 굴절은 모두 소리의 전달 현상이다.","굴절은 빛이 반드시 흡수되는 현상이다.","반사는 진공에서만 일어난다."],0,"반사는 물체 표면에서 빛의 방향이 바뀌는 것이고, 굴절은 다른 물질로 들어가며 꺾이는 현상이다."],
+["빛의 삼원색에 해당하는 조합은?",["빨강·노랑·파랑","빨강·초록·파랑","초록·노랑·보라","파랑·검정·흰색"],1,"빛의 삼원색은 빨강, 초록, 파랑이다."],
+["파동이 전달될 때 매질의 각 부분이 제자리에서 진동하는 사실로부터 알 수 있는 것은?",["매질이 파동과 함께 멀리 이동한다.","파동은 매질을 통해 에너지를 전달한다.","매질은 에너지를 전달하지 않는다.","파동은 물질의 이동만을 뜻한다."],1,"매질은 제자리에서 진동하지만 파동은 에너지를 전달한다."],
+["파동의 진동수가 2배가 되면 1초 동안 진동하는 횟수는?",["절반","2배","변하지 않음","0"],1,"진동수는 1초 동안 진동한 횟수이므로 2배가 된다."],
+["다음 중 소리의 높낮이가 높은 경우는?",["진동수가 작은 파동","진동수가 큰 파동","진폭이 작은 파동","진폭이 큰 파동"],1,"높은 소리는 진동수가 크다."],
+["골전도 스피커가 소리를 전달하는 방식으로 옳은 것은?",["뼈의 진동을 통해 소리를 전달한다.","빛의 반사를 이용한다.","진공을 통해 소리를 전달한다.","혈액의 흐름으로 소리를 전달한다."],0,"골전도 스피커는 뼈를 통해 소리를 전달한다."],
+["원소와 화합물의 구분 기준으로 가장 알맞은 것은?",["색깔","입자의 종류","상태","온도"],1,"한 종류의 입자로 이루어진 물질은 원소, 두 종류 이상의 입자로 이루어진 물질은 화합물이다."],
+["화학식 CO₂에서 나타내는 원자의 종류와 수는?",["탄소 2개, 산소 1개","탄소 1개, 산소 2개","탄소 1개, 산소 1개","탄소 2개, 산소 2개"],1,"CO₂는 탄소 원자 1개와 산소 원자 2개를 나타낸다."],
+["원자에서 전자의 전하에 해당하는 것은?",["(+)","(-)","전하량 0","상황에 따라 (+) 또는 (-)"],1,"전자는 (-)전하를 띤다."],
+["원자핵을 구성하는 중성자의 전하량은?",["양(+)","음(-)","0","항상 전자와 같다"],2,"중성자는 전하량이 0이다."],
+["원소의 원자 번호를 알면 직접 알 수 있는 것은?",["양성자 수","중성자 수","원자의 색","원자의 부피"],0,"원자 번호는 원자핵 속 양성자 수를 나타낸다."],
+["같은 족 원소들의 성질이 비슷한 이유를 이해할 때 교과서가 강조하는 특징은?",["비슷한 화학적 성질을 가진 원소가 같은 세로줄에 배열됨","원자 번호가 모두 같음","원자핵의 크기가 같음","모두 같은 주기에 있음"],0,"주기율표에서 성질이 유사한 원소들은 같은 족에 모여 있다."],
+["혈액에서 산소를 운반하는 데 중요한 역할을 하는 혈액 성분은?",["혈장","적혈구","백혈구","혈소판"],1,"적혈구는 산소를 운반한다."],
+["혈액의 액체 성분으로 영양소·이산화 탄소·노폐물 등을 운반하는 것은?",["혈장","적혈구","백혈구","혈소판"],0,"혈장에는 영양소, 이산화 탄소, 노폐물 등이 녹아 운반된다."],
+["폐순환과 온몸순환에 대한 설명으로 옳은 것은?",["폐순환은 심장과 폐 사이, 온몸순환은 심장과 온몸 사이의 순환이다.","폐순환은 심장과 콩팥 사이의 순환이다.","온몸순환은 폐에서만 일어난다.","두 순환은 혈액과 관계없다."],0,"폐순환은 심장과 폐 사이, 온몸순환은 심장과 온몸 사이에서 이루어진다."],
+["세포 호흡에 필요한 물질의 조합으로 옳은 것은?",["포도당과 산소","물과 이산화 탄소","요소와 물","질소와 녹말"],0,"세포는 영양소와 산소를 이용하여 에너지를 얻는다."],
+["세포 호흡 결과 생성되는 물질에 해당하는 것은?",["이산화 탄소와 물","녹말과 단백질","산소와 포도당","무기염류와 지방"],0,"교과서의 세포 호흡 모식도는 포도당+산소 → 이산화 탄소+물+에너지이다."],
+["별의 연주 시차가 큰 별에 대한 설명으로 옳은 것은?",["지구에서 더 멀다.","지구에서 더 가깝다.","거리를 측정할 수 없다.","항상 더 어둡다."],1,"연주 시차가 클수록 별까지의 거리가 가깝다."],
+["우리은하의 성운 중 주변 별빛을 반사하여 파란빛을 내는 것은?",["방출 성운","반사 성운","암흑 성운","구상 성단"],1,"반사 성운은 주변의 별빛을 반사하여 파란빛을 낸다."]
+],
+sa:[
+["원소와 화합물의 차이를 입자의 종류를 기준으로 설명하고, 각각 한 가지 예를 쓰시오.","원소는 한 종류의 입자로 이루어진 물질이고 화합물은 두 종류 이상의 입자로 이루어진 물질이다. 예: 수소(원소), 물(화합물).","구분 기준(1점), 예시(1점)"],
+["세포 호흡에 필요한 물질과 생성되는 물질을 화살표로 나타내시오.","포도당 + 산소 → 이산화 탄소 + 물 + 에너지","반응물(1점), 생성물 및 에너지(1점)"],
+["별의 연주 시차와 별까지의 거리 사이의 관계를 설명하시오.","연주 시차가 클수록 별까지의 거리는 가깝고, 연주 시차가 작을수록 별까지의 거리는 멀다.","반비례 관계를 정확히 설명(2점)"],
+["방출 성운·반사 성운·암흑 성운이 관측되는 특징을 각각 서술하시오.","방출 성운은 고온의 별에서 에너지를 받아 붉은빛을 내고, 반사 성운은 주변 별빛을 반사해 파란빛을 내며, 암흑 성운은 뒤에서 오는 별빛을 가려 검게 보인다.","각 성운의 특징을 정확히 제시(각 ⅔점 수준, 총 2점)"]
+]}
+];
+let current=0;
+const $=s=>document.querySelector(s);
+function render(){
+ $('#tabs').innerHTML=exams.map((e,i)=>`<button class="${i===current?'active':''}" onclick="show(${i})">${e.title}</button>`).join('');
+ $('#papers').innerHTML=exams.map((e,i)=>`<section class="paper" id="paper${i}" style="display:${i===current?'block':'none'}">
+ <div class="exam-head"><h2>과 학 기 말 고 사</h2><div class="sub">${e.title} 실전 모의시험</div></div>
+ <div class="meta"><span>학년·반 <input aria-label="학년반"> 번 <input aria-label="번호"></span><span>이름 <input aria-label="이름" style="width:120px"></span><span>총점 <b>100</b>점</span></div>
+ <div class="notice">※ 시험 시간: 45분　※ 객관식 20문항(각 4점, 80점) / 주관식 4문항(각 5점, 20점)<br>※ 객관식은 가장 알맞은 답 하나를 고르고, 주관식은 핵심 개념을 포함하여 서술하시오.</div>
+ <div class="section-title">Ⅰ. 선택형 (각 4점, 총 80점)</div>
+ ${e.mc.map((q,j)=>`<div class="q"><div><span class="qnum">${j+1}.</span><span class="qtext">${q[0]}</span></div><div class="choices">${[...q[1], "제시된 현상이나 원리와는 관련이 없는 설명이다. "].slice(0,5).map((c,k)=>`<label class="choice"><input type="radio" name="e${i}q${j}" value="${k}"><span>${k+1}. ${c}</span></label>`).join('')}</div><div class="feedback" id="feedback${i}_${j}" aria-live="polite"></div></div>`).join('')}
+ <div class="section-title">Ⅱ. 서술형 (각 5점, 총 20점)</div>
+ ${e.sa.map((q,j)=>`<div class="q"><div><span class="qnum">${j+1}.</span><span class="qtext">${q[0]}</span></div><textarea class="short-answer" placeholder="답안을 서술하시오."></textarea></div>`).join('')}
+ <div class="scoreline"><span>선택형 점수: ______ / 80점</span><span>서술형 점수: ______ / 20점</span><span>합계: ______ / 100점</span></div>
+ <div class="result" id="result${i}"></div>
+ <div class="key" id="key${i}"><h3>${e.title} 정답 및 해설</h3><p><b>선택형 정답:</b> ${e.mc.map((q,j)=>`${j+1}번 ${q[2]+1}번`).join(' · ')}</p>${e.mc.map((q,j)=>`<p><b>${j+1}번.</b> ${q[3]}</p>`).join('')}<h3>서술형 예시 답안 및 채점 기준</h3>${e.sa.map((q,j)=>`<p><b>${j+1}번 예시 답안:</b> ${q[1]}<br><b>채점 기준:</b> ${q[2]}</p>`).join('')}</div>
+ </section>`).join('');
+}
+function show(i){current=i;render()}
+function grade(){
+ const e=exams[current];let correct=0,answered=0;const wrong=[],unanswered=[];
+ e.mc.forEach((q,j)=>{
+   const selected=document.querySelector(`#paper${current} input[name="e${current}q${j}"]:checked`);
+   const feedback=$(`#feedback${current}_${j}`);
+   feedback.className='feedback show';
+   if(selected){
+     answered++;
+     if(Number(selected.value)===q[2]){
+       correct++;feedback.classList.add('correct');
+       feedback.innerHTML=`<b>정답입니다.</b> ${q[2]+1}번 · ${q[3]}`;
+     }else{
+       wrong.push(j+1);feedback.classList.add('incorrect');
+       feedback.innerHTML=`<b>오답입니다.</b> 정답은 ${q[2]+1}번입니다. ${q[3]}`;
+     }
+   }else{
+     unanswered.push(j+1);feedback.classList.add('incorrect');
+     feedback.innerHTML=`<b>답을 선택하지 않았습니다.</b> 정답은 ${q[2]+1}번입니다. ${q[3]}`;
+   }
+ });
+ const score=correct*4,unansweredCount=20-answered;
+ const detail=wrong.length?`오답 ${wrong.join(', ')}번`:'선택한 문항은 모두 정답입니다.';
+ $('#result'+current).innerHTML=`객관식 점수 <b>${score}/80점</b>　·　정답 ${correct}/20　·　미응답 ${unansweredCount}문항<br>${detail}<br><span style="font-weight:500">각 문항 아래에서 정답과 해설을 확인할 수 있습니다.</span>`;
+}
+function resetPaper(){
+ if(!confirm('현재 회차의 답안을 모두 지울까요?'))return;
+ document.querySelectorAll(`#paper${current} input[type=radio]`).forEach(x=>x.checked=false);
+ document.querySelectorAll(`#paper${current} textarea`).forEach(x=>x.value='');
+ $('#result'+current).textContent='';
+ document.querySelectorAll(`#paper${current} .feedback`).forEach(x=>{x.className='feedback';x.textContent=''});
+}
+function printExam(){
+ const e=exams[current],key=$('#printKey');
+ key.innerHTML=`<div class="exam-head"><h2>정 답 및 해 설</h2><div class="sub">${e.title} 교사용 답지</div></div>
+ <div class="section-title">Ⅰ. 선택형 정답</div>
+ <div class="answer-grid">${e.mc.map((q,j)=>`<div><b>${j+1}번</b>　${q[2]+1}번</div>`).join('')}</div>
+ <div class="section-title">Ⅱ. 선택형 해설</div>${e.mc.map((q,j)=>`<p class="answer-explain"><b>${j+1}번 (${q[2]+1}번)</b> ${q[3]}</p>`).join('')}
+ <div class="section-title">Ⅲ. 서술형 예시 답안 및 채점 기준</div>${e.sa.map((q,j)=>`<p class="answer-explain"><b>${j+1}번 예시 답안:</b> ${q[1]}<br><b>채점 기준:</b> ${q[2]}</p>`).join('')}`;
+ key.style.display='block';
+ window.print();
+ key.style.display='none';
+}
+render();
+</script></body></html>
